@@ -7,59 +7,57 @@ public class BitSet implements FlagsSet{
     public boolean get(int index) {
         checkIndex(index);
         int bitsNdx = index / 32;
-        System.out.println("bitsNdx=" + bitsNdx);
-        int bit = 1 <<  (index % 32);
-        System.out.println("bit=" + bit);
-        return (bits[bitsNdx / 32] & bit) != 0;
+        int bitNdx = index % 32;
+        //int bitValue=((bits[bitsNdx] >> bitNdx) & 1);
+        //System.out.println("bitValue=" + bitValue);
+        return ((bits[bitsNdx] >> bitNdx) & 1) == 1;
     }
 
     @Override
     public void set(int index) {
         checkIndex(index);
-        int word = bits[index / 32];
-        int posBit = 1 << (index % 32);
-        word |= posBit;
+        int bitsNdx = index / 32;
+        int bitNdx = index % 32;
+        bits[bitsNdx] |= (1 << (bitNdx));
     }
 
     @Override
     public void set(int index, boolean value) {
         checkIndex(index);
-        int word = bits[index / 32];
-        int posBit = 1 << (index % 32);
-        if (value) {
-            word |= posBit;
-        } else {
-            //word &= (0xFFFFFFFF - posBit);
-            bits[index / 32] = word;
-        }
+        int bitsNdx = index / 32;
+        int bitNdx = index % 32;
+        if (value)
+            bits[bitsNdx] |= (1 << (bitNdx));
+         else
+            bits[bitsNdx] &=~ (1 << (bitNdx));
     }
 
     @Override
     public void clear(int index) {
         checkIndex(index);
+        int bitsNdx = index / 32;
+        int bitNdx = index % 32;
+        bits[bitsNdx] &=~ (1 << (bitNdx));
     }
 
     @Override
     public void flip(int index) {
         checkIndex(index);
+        bits[index / 32] ^= (1 << (index % 32));
     }
 
     @Override
     public int count() {
-        return 0;
-    }
 
-    //bitsNdx = index / 32; индекс бита с которым работать
-    // bitNdx= index / % 32
-    // bit = 1 << bitIndex
-    //     = 1 << (index % 32);
-    //index = 8;
-    //bitsndx = 8 / 32 = 0;
-    // bit 1 << (8 %32) = 256 = 0x100
-    //    = 0b1_0000_0000
-    /*
-          https://javarush.ru/groups/posts/2175-java-bits-and-bytes
-     */
+        int res = 0;
+        for (int i = 0; i < SIZE; i++) {
+            int bitsNdx = i / 32;
+            int bitNdx = i % 32;
+            if (((bits[bitsNdx] >> bitNdx) & 1) == 1)
+                res++;
+        }
+        return res;
+     }
 
     private void checkIndex(int index) {
         if (index < 0 || index >= SIZE)
@@ -69,9 +67,8 @@ public class BitSet implements FlagsSet{
     @Override
     public String toString() {
         char[] ac = new char[SIZE];
-        for (int i = 0; i < bits.length; i++) {
-            boolean value = get(i);
-            ac[i] = value ? '1' : '0';
+        for (int i = 0; i < SIZE; i++) {
+            ac[i] = (get(i)) ? '1' : '0';
         }
         return new String(ac);
     }
