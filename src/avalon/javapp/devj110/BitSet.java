@@ -3,22 +3,19 @@ package avalon.javapp.devj110;
 public class BitSet implements FlagsSet{
     private final int[] bits = new int[SIZE / 32];
 
+
     @Override
     public boolean get(int index) {
         checkIndex(index);
         int bitsNdx = index / 32;
         int bitNdx = index % 32;
-        //int bitValue=((bits[bitsNdx] >> bitNdx) & 1);
-        //System.out.println("bitValue=" + bitValue);
         return ((bits[bitsNdx] >> bitNdx) & 1) == 1;
     }
 
     @Override
     public void set(int index) {
         checkIndex(index);
-        int bitsNdx = index / 32;
-        int bitNdx = index % 32;
-        bits[bitsNdx] |= (1 << (bitNdx));
+        set(index, true);
     }
 
     @Override
@@ -35,9 +32,7 @@ public class BitSet implements FlagsSet{
     @Override
     public void clear(int index) {
         checkIndex(index);
-        int bitsNdx = index / 32;
-        int bitNdx = index % 32;
-        bits[bitsNdx] &=~ (1 << (bitNdx));
+        set(index, false);
     }
 
     @Override
@@ -48,14 +43,10 @@ public class BitSet implements FlagsSet{
 
     @Override
     public int count() {
-
         int res = 0;
-        for (int i = 0; i < SIZE; i++) {
-            int bitsNdx = i / 32;
-            int bitNdx = i % 32;
-            if (((bits[bitsNdx] >> bitNdx) & 1) == 1)
-                res++;
-        }
+
+        for (int i = 0; i < SIZE; i++)
+            if (get(i)) res++;
         return res;
      }
 
@@ -67,9 +58,8 @@ public class BitSet implements FlagsSet{
     @Override
     public String toString() {
         char[] ac = new char[SIZE];
-        for (int i = 0; i < SIZE; i++) {
+        for (int i = 0; i < SIZE; i++)
             ac[i] = (get(i)) ? '1' : '0';
-        }
         return new String(ac);
     }
 }

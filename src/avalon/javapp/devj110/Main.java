@@ -44,6 +44,7 @@ public class Main {
         flagsSet1.flip(8);
         flagsSet1.clear(11);
         flagsSet1.clear(2);
+        flagsSet1.clear(2);
         System.out.println("count=" + flagsSet1.count());
         System.out.println(flagsSet1.toString().substring(0, 30));
 
