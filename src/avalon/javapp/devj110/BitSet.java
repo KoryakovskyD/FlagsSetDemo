@@ -3,7 +3,6 @@ package avalon.javapp.devj110;
 public class BitSet implements FlagsSet{
     private final int[] bits = new int[SIZE / 32];
 
-
     @Override
     public boolean get(int index) {
         checkIndex(index);
@@ -41,14 +40,30 @@ public class BitSet implements FlagsSet{
         bits[index / 32] ^= (1 << (index % 32));
     }
 
+
+
     @Override
     public int count() {
         int res = 0;
 
-        for (int i = 0; i < SIZE; i++)
-            if (get(i)) res++;
+        for (int i = 0; i < SIZE/32; i++) {
+            for (int j = 0; j <= 31; j++) {
+                if (((bits[i] >> j) & 1) == 1) res++;
+            }
+        }
         return res;
-     }
+    }
+
+    // не для задания, просто чтобы разобраться в теме
+    public int countSetBits(int number){
+        int count = 0;
+        while(number>0){
+            int result = number & 1;
+            count += result;
+            number >>= 1;
+        }
+        return count;
+    }
 
     private void checkIndex(int index) {
         if (index < 0 || index >= SIZE)
@@ -57,9 +72,14 @@ public class BitSet implements FlagsSet{
 
     @Override
     public String toString() {
+        int counter=0;
         char[] ac = new char[SIZE];
-        for (int i = 0; i < SIZE; i++)
-            ac[i] = (get(i)) ? '1' : '0';
+        for (int i = 0; i < SIZE/32; i++) {
+            for (int j = 0; j < 32; j++) {
+                ac[counter] = (((bits[i] >> j) & 1) == 1) ? '1' : '0';
+                counter++;
+            }
+        }
         return new String(ac);
     }
 }

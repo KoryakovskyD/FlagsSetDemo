@@ -12,4 +12,5 @@ public interface FlagsSet {
     void flip(int index);
     int count();
     String toString();
+    int countSetBits(int number);
 }

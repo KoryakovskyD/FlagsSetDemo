@@ -37,8 +37,11 @@ public class Main {
         flagsSet1.set(13, true);
         flagsSet1.set(18, false);
         flagsSet1.set(20, true);
+        flagsSet1.set(34);
+        flagsSet1.set(46);
+        flagsSet1.set(71);
         System.out.println("count=" + flagsSet1.count());
-        System.out.println(flagsSet1.toString().substring(0, 30));
+        System.out.println(flagsSet1.toString().substring(0, 80));
 
 
         flagsSet1.flip(8);
@@ -46,7 +49,13 @@ public class Main {
         flagsSet1.clear(2);
         flagsSet1.clear(2);
         System.out.println("count=" + flagsSet1.count());
-        System.out.println(flagsSet1.toString().substring(0, 30));
+        System.out.println(flagsSet1.toString().substring(0, 80));
+
+        System.out.println("--------------------------------------------------");
+
+        System.out.println("");
+
+        //System.out.println(flagsSet1.countSetBits(46));
 
     }
 }

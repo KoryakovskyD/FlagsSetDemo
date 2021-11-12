@@ -61,4 +61,14 @@ public class BooleanArray implements FlagsSet{
         return new String(ac);
     }
 
+    @Override
+    public int countSetBits(int number) {
+        int count = 0;
+        while(number>0){
+            int result = number & 1;
+            count += result;
+            number >>= 1;
+        }
+        return count;
+    }
 }
